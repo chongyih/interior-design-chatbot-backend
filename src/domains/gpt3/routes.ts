@@ -1,6 +1,7 @@
 import express from "express"
-const router = express.Router()
 import { authenticateOpenAi, createCompletion } from "./controller"
+
+const router = express.Router()
 
 router.use((req, res, next) => {
     console.log("Time: ", Date.now())
@@ -22,4 +23,4 @@ router.post('/', async (req, res) => {
     }
 })
 
-module.exports = router
+export default router

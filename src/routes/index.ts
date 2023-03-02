@@ -1,8 +1,8 @@
 import express from "express"
-const router = express.Router()
+import gpt3Routes from "../domains/gpt3/routes"
 
-const gpt3Routes = require("../domains/gpt3/routes")
+const router = express.Router()
 
 router.use("/gpt3", gpt3Routes)
 
-module.exports = router
+export default router

@@ -1,3 +1,3 @@
-const gpt3Route = require("./routes")
+import gpt3Route from "./routes"
 
-module.exports = gpt3Route
+export default gpt3Route
