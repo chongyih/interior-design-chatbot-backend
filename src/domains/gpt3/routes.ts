@@ -12,7 +12,6 @@ router.post('/', async (req, res) => {
     const { text } = req.body
 
     try {
-
         const openai = authenticateOpenAi()
         const response = await createCompletion(openai, text)
 

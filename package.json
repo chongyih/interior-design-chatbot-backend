@@ -2,11 +2,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc & node .",
-    "dev": "nodemon src/index.ts"
+    "start": "tsc & node -r dotenv/config .",
+    "dev": "nodemon -r dotenv/config src/index.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "openai": "^3.2.1"
   },
