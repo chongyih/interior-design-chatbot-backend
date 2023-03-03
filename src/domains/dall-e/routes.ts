@@ -1,11 +1,11 @@
 import express from "express"
 import { authenticateOpenAi } from "../../utils/openai"
-import { createCompletion, extractPrompts } from "./controller"
+import { createImage } from "./controller"
 
 const router = express.Router()
 
 router.use((req, res, next) => {
-    console.log("GPT3 Time: ", Date.now())
+    console.log("DALL-E Time: ", Date.now())
     next()
 })
 
@@ -14,16 +14,11 @@ router.post('/', async (req, res) => {
 
     try {
         const openai = authenticateOpenAi()
-        const response = await createCompletion(openai, prompt)
+        const response = await createImage(openai, prompt)
 
-        const { GPTPrompt, DALLEPrompts } = extractPrompts(response)
-        res.json({
-            GPTPrompt,
-            DALLEPrompts
-        })
+        res.json(response)
 
     } catch (error) {
-        console.log(error)
         res.status(500).json(error)
     }
 })
