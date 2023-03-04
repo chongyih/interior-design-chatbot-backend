@@ -1,10 +1,15 @@
 import express from "express"
-import dalleRoute from "../domains/dall-e"
-import gpt3Routes from "../domains/gpt3/routes"
+
+import userRoutes from "../domains/user/routes"
+import dalleRoute from "../domains/dalle"
+import gptRoutes from "../domains/gpt/routes"
+import chatRoutes from "../domains/chat"
 
 const router = express.Router()
 
-router.use("/gpt3", gpt3Routes)
+router.use("/user", userRoutes)
+router.use("/gpt", gptRoutes)
 router.use("/dalle", dalleRoute)
+router.use("/chat", chatRoutes)
 
 export default router
