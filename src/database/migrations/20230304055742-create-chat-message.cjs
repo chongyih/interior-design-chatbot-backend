@@ -25,6 +25,9 @@ module.exports = {
       dalle_prompt: {
         type: Sequelize.ARRAY(Sequelize.STRING(1024))
       },
+      full_response: {
+        type: Sequelize.STRING(65535)
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

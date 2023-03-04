@@ -18,6 +18,7 @@ const ChatMessage = db.define('ChatMessage', {
   user_prompt: DataTypes.STRING(2048),
   gpt_response: DataTypes.STRING(2048),
   dalle_prompt: DataTypes.ARRAY(DataTypes.STRING(1024)),
+  full_response: DataTypes.STRING(65535)
 });
 (async () => {
   await db.sync()

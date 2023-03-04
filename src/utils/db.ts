@@ -19,13 +19,24 @@ export const createNewUser = async (name: string, email?: string) => {
     return user
 }
 
-export const createNewChatMessage = async (chat_id: number, user_prompt: string, gpt_response: string, dalle_prompt: string[]) => {
+export const createNewChatMessage = async (chat_id: number, user_prompt: string, full_response: string, gpt_response: string, dalle_prompt: string[]) => {
     const chatMessage = ChatMessage.create({
         chat_id: chat_id,
         user_prompt: user_prompt,
         gpt_response: gpt_response,
-        dalle_prompt: dalle_prompt
+        dalle_prompt: dalle_prompt,
+        full_response: full_response
     })
 
     return chatMessage
+}
+
+export const getChatMessages = async (chat_id: number) => {
+    const chatMessages = ChatMessage.findAll({
+        where: {
+            chat_id: chat_id
+        }
+    })
+
+    return chatMessages
 }

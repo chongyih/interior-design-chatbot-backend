@@ -1,5 +1,6 @@
 import express from "express"
-import { createNewChatMessage } from "../../utils/db"
+import { ChatCompletionRequestMessage } from "openai"
+import { createNewChatMessage, getChatMessages } from "../../utils/db"
 import { authenticateOpenAi } from "../../utils/openai"
 import { createCompletion, extractPrompts } from "./controller"
 
@@ -15,12 +16,16 @@ router.post('/', async (req, res) => {
 
     try {
         const openai = authenticateOpenAi()
-        const response = await createCompletion(openai, prompt)
+        const messages = await getChatMessages(chat_id)
+        const previousPrompts = messages.flatMap((message): ChatCompletionRequestMessage[] => [
+            { "role": 'user', "content": message.toJSON().user_prompt as string },
+            { "role": 'assistant', "content": message.toJSON().full_response as string }
+        ])
+        const response = await createCompletion(openai, previousPrompts.concat({ "role": "user", "content": prompt as string }))
 
+        console.log(response)
         const { GPTPrompt, DALLEPrompts } = extractPrompts(response)
-        const createMessage = createNewChatMessage(chat_id, prompt, GPTPrompt, DALLEPrompts)
-
-        console.log(createMessage)
+        const createMessage = await createNewChatMessage(chat_id, prompt, response, GPTPrompt, DALLEPrompts)
 
         res.json({
             GPTPrompt,
