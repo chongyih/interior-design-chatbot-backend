@@ -14,7 +14,9 @@ router.post('/create', async (req, res) => {
     try {
         const chat = await createNewChat(user_id)
 
-        res.json(chat)
+        console.log(chat)
+
+        res.json(chat.toJSON().id)
 
     } catch (error) {
         res.status(500).json(error)
