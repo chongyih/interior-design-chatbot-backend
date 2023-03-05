@@ -10,6 +10,24 @@ export const createNewChat = async (user_id: number) => {
     return chat
 }
 
+export const getAllChat = async (user_id: number) => {
+    const chats = Chat.findAll({
+        where: {
+            user_id: user_id
+        }
+    })
+
+    return chats
+}
+
+export const getChatHistory = async (chat_id: number) => {
+    const chatHistory = ChatMessage.findAll({
+        where: {
+            chat_id: chat_id
+        }
+    })
+}
+
 export const createNewUser = async (name: string, email?: string) => {
     const user = User.create({
         name: name,
