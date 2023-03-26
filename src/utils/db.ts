@@ -58,3 +58,29 @@ export const getChatMessages = async (chat_id: number) => {
 
     return chatMessages
 }
+
+export const deleteChatMessages = async (chat_id: number) => {
+    const status = ChatMessage.destroy({
+        where: {
+            chat_id: chat_id
+        }
+    })
+
+    return status
+}
+
+export const updateImage = async (chat_id: string, image: string) => {
+    const chat = await Chat.findByPk(chat_id)
+
+    chat.set('image', image)
+
+    chat.save()
+
+    return chat
+}
+
+export const getImage = async (chat_id: string) => {
+    const chat = await Chat.findByPk(chat_id)
+
+    return chat.get('image')
+}

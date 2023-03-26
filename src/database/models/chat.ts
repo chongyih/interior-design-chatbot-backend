@@ -15,6 +15,10 @@ const Chat = db.define('Chat', {
       model: User,
       key: 'id'
     }
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
 (async () => {

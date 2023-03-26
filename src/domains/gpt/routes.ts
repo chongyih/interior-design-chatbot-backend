@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
         ])
         const response = await createCompletion(openai, previousPrompts.concat({ "role": "user", "content": prompt as string }))
 
-        console.log(response)
         const { GPTPrompt, DALLEPrompts } = extractPrompts(response)
         const createMessage = await createNewChatMessage(chat_id, prompt, response, GPTPrompt, DALLEPrompts)
 
