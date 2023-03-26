@@ -43,31 +43,39 @@ export const storeImage = async (res: any, chat_id: string, image: string) => {
     })
 }
 
-export const editBaseImage = async (prompt: string, imageLink: string, samples: number = 2): Promise<string[]> => {
-    const resp = await axios.post("https://stablediffusionapi.com/api/v5/controlnet", {
+export const editBaseImage = async (prompt: string, imageLink: string, samples: number = 2): Promise<string[] | Boolean> => {
+    // const resp = await axios.post("https://stablediffusionapi.com/api/v5/controlnet", {
+    //     key: process.env.STABLE_DIFFUSION_KEY,
+    //     controlnet_model: "canny",
+    //     model_id: "midjourney",
+    //     auto_hint: "yes",
+    //     prompt: prompt,
+    //     negative_prompt: null,
+    //     init_image: imageLink,
+    //     width: 512,
+    //     height: 512,
+    //     samples: samples,
+    //     num_inference_steps: "30",
+    //     safety_checker: "no",
+    //     enhance_prompts: "yes",
+    //     scheduler: "UniPCMultistepScheduler",
+    //     guidance_scale: 7.5,
+    //     strength: 0.7,
+    //     seed: null,
+    //     webhook: null,
+    //     track_id: null
+    // })
+
+    const resp = await axios.post("https://stablediffusionapi.com/api/v5/interior", {
         key: process.env.STABLE_DIFFUSION_KEY,
-        controlnet_model: "canny",
-        model_id: "midjourney",
-        auto_hint: "yes",
         prompt: prompt,
-        negative_prompt: null,
-        init_image: imageLink,
-        width: 512,
-        height: 512,
-        samples: samples,
-        num_inference_steps: "30",
-        safety_checker: "no",
-        enhance_prompts: "yes",
-        scheduler: "UniPCMultistepScheduler",
-        guidance_scale: 7.5,
-        strength: 0.7,
-        seed: null,
-        webhook: null,
-        track_id: null
+        init_image: imageLink
     })
 
-    if (resp.data.status === "failed" || resp.data.status === "error")
-        throw new Error(resp.data.message)
+    if (resp.data.status === "failed" || resp.data.status === "error") {
+        console.error(resp.data)
+        return false
+    }
 
     if (resp.data.status === "processing") {
         const eta = resp.data.eta
@@ -80,8 +88,10 @@ export const editBaseImage = async (prompt: string, imageLink: string, samples: 
             key: process.env.STABLE_DIFFUSION_KEY
         })
 
-        if (resp.data.status === "failed" || resp.data.status === "error")
-            throw new Error(resp2.data.message)
+        if (resp.data.status === "failed" || resp.data.status === "error") {
+            console.error(resp.data.messege)
+            return false
+        }
 
         return resp2.data.output
     } else if (resp.data.output) {

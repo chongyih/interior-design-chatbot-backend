@@ -73,6 +73,9 @@ router.post('/edit', async (req, res) => {
     try {
         const imageLinks = await editBaseImage(prompt, baseImage)
 
+        if (!imageLinks)
+            res.status(500).json("Failed to edit image")
+
         const convertImage = async (link: string) => {
             const resp = await axios.get(link, {
                 responseType: 'arraybuffer'
@@ -82,7 +85,9 @@ router.post('/edit', async (req, res) => {
             return b64
         }
 
-        const imageB64 = await Promise.all(imageLinks.map(convertImage))
+        let imageB64
+        if (Array.isArray(imageLinks))
+            imageB64 = await Promise.all(imageLinks.map(convertImage))
 
         res.json(imageB64)
     }
