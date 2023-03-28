@@ -2,6 +2,7 @@ import { CreateImageRequestSizeEnum, OpenAIApi } from "openai"
 import AWS from "aws-sdk"
 import { updateImage } from "../../utils/db"
 import axios from "axios"
+import Replicate from "replicate"
 
 export const createImage = async (openai: OpenAIApi, prompt: string, n: number = 3, size: CreateImageRequestSizeEnum = "512x512"): Promise<string[]> => {
     const response = await openai.createImage({
@@ -66,20 +67,36 @@ export const editBaseImage = async (prompt: string, imageLink: string, samples: 
     //     track_id: null
     // })
 
-    const resp = await axios.post("https://stablediffusionapi.com/api/v5/interior", {
-        key: process.env.STABLE_DIFFUSION_KEY,
-        prompt: prompt,
-        init_image: imageLink
-    })
+    // const resp = await axios.post("https://stablediffusionapi.com/api/v5/interior", {
+    //     key: process.env.STABLE_DIFFUSION_KEY,
+    //     prompt: prompt,
+    //     init_image: imageLink
+    // })
 
-    if (resp.data.status === "failed" || resp.data.status === "error") {
-        console.error(resp.data)
-        return false
-    }
+    // if (resp.data.status === "failed" || resp.data.status === "error") {
+    //     console.error(resp.data)
+    //     return false
+    // }
 
-    if (resp.data.status === "processing") {
-        return resp.data.eta
-    } else if (resp.data.output) {
-        return resp.data.output
-    }
-}
+    // if (resp.data.status === "processing") {
+    //     return resp.data.eta
+    // } else if (resp.data.output) {
+    //     return resp.data.output
+    // }
+
+    const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN, userAgent: 'Interio AI' })
+
+    const output = await replicate.run(
+        "jagilley/controlnet-hough:854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b",
+        {
+            input: {
+                image: imageLink,
+                prompt: prompt,
+                num_samples: "4",
+            }
+        }
+    )
+
+    // @ts-ignore
+    return output.shift()
+}   
