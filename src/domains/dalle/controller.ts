@@ -43,7 +43,7 @@ export const storeImage = async (res: any, chat_id: string, image: string) => {
     })
 }
 
-export const editBaseImage = async (prompt: string, imageLink: string, samples: number = 2): Promise<string[] | Boolean> => {
+export const editBaseImage = async (prompt: string, imageLink: string, samples: number = 2): Promise<string[] | Boolean | Number> => {
     // const resp = await axios.post("https://stablediffusionapi.com/api/v5/controlnet", {
     //     key: process.env.STABLE_DIFFUSION_KEY,
     //     controlnet_model: "canny",
@@ -78,22 +78,7 @@ export const editBaseImage = async (prompt: string, imageLink: string, samples: 
     }
 
     if (resp.data.status === "processing") {
-        const eta = resp.data.eta
-
-        await new Promise(resolve => setTimeout(resolve, eta * 1000))
-
-        const result = resp.data.fetch_result
-
-        const resp2 = await axios.post(result, {
-            key: process.env.STABLE_DIFFUSION_KEY
-        })
-
-        if (resp.data.status === "failed" || resp.data.status === "error") {
-            console.error(resp.data.messege)
-            return false
-        }
-
-        return resp2.data.output
+        return resp.data.eta
     } else if (resp.data.output) {
         return resp.data.output
     }
