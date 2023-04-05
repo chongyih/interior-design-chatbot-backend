@@ -76,9 +76,6 @@ router.post('/edit', async (req, res) => {
         if (!imageLinks)
             res.status(500).json("Failed to edit image")
 
-        if (typeof imageLinks === "number")
-            res.json({ eta: imageLinks })
-
         const convertImage = async (link: string) => {
             const resp = await axios.get(link, {
                 responseType: 'arraybuffer'

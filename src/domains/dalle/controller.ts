@@ -86,17 +86,19 @@ export const editBaseImage = async (prompt: string, imageLink: string, samples: 
 
     const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN, userAgent: 'Interio AI' })
 
-    const output = await replicate.run(
+    // @ts-ignore
+    const output: string[] = await replicate.run(
         "jagilley/controlnet-hough:854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b",
         {
             input: {
                 image: imageLink,
                 prompt: prompt,
-                num_samples: "4",
+                num_samples: "1",
             }
         }
     )
 
-    // @ts-ignore
-    return output.shift()
+    output.shift()
+
+    return output
 }   
