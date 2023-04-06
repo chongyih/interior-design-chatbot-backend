@@ -81,13 +81,13 @@ export const createCompletion = async (openai: OpenAIApi, prompts: ChatCompletio
     return response.data.choices[0].message.content
 }
 
-export const extractPrompts = (text: string): { GPTPrompt: string, DALLEPrompts: string[] } => {
+export const extractPrompts = (text: string): { GPTPrompt: string, DALLEPrompts: string } => {
     const questionTag = text.match(/<Question>(.*?)<\/Question>/s)?.[1].replace('\n', '')
     const answerTag = text.match(/<Answer>(.*?)<\/Answer>/s)?.[1].replace('\n', '')
     const promptTag = text.match(/<Prompt>(.*?)<\/Prompt>/s)?.[1]
 
     if (!questionTag && !answerTag && !promptTag) {
-        return { GPTPrompt: text, DALLEPrompts: [] }
+        return { GPTPrompt: text, DALLEPrompts: '' }
     }
 
     let GPTPrompt
@@ -111,5 +111,5 @@ const extractDALLEPrompts = (text: string) => {
     const newText = text?.replace(regex, '');
     const array = newText?.split('\n');
 
-    return array?.filter(Boolean);
+    return array?.filter(Boolean).join('|');
 }
