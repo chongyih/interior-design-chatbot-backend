@@ -7,11 +7,13 @@
     "dev": "nodemon -r dotenv/config --esm src/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "^4.12.0",
     "aws-sdk": "^2.1343.0",
     "axios": "^1.3.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mysql2": "^3.2.0",
     "openai": "^3.2.1",
     "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
@@ -31,6 +33,7 @@
     "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.4",
+    "prisma": "^4.12.0",
     "typescript": "^4.9.5"
   }
 }

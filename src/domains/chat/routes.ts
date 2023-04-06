@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     try {
         const id = await getAllChat(user_id)
 
-        res.json(id.map((chat) => chat.toJSON().id))
+        id ? res.json(id.map((chat) => chat.id)) : res.status(500).json('No Chats Found')
     } catch (error) {
         res.status(500).json(error)
     }
@@ -26,7 +26,7 @@ router.post('/create', async (req, res) => {
     try {
         const chat = await createNewChat(user_id)
 
-        res.json(chat.toJSON().id)
+        chat ? res.json(chat.id) : res.status(500).json('Chat Creation Failed')
 
     } catch (error) {
         res.status(500).json(error)
@@ -39,14 +39,14 @@ router.post('/history', async (req, res) => {
     try {
         const history = await getChatMessages(chat_id)
 
-        res.json(history.map((message) => {
+        history ? res.json(history.map((message) => {
             return {
-                UserPrompt: message.toJSON().user_prompt,
-                GPTPrompt: message.toJSON().gpt_response,
-                DALLEPrompts: message.toJSON().dalle_prompt,
+                UserPrompt: message.user_prompt,
+                GPTPrompt: message.gpt_response,
+                DALLEPrompts: message.dalle_prompt,
             }
         })
-        )
+        ) : res.status(500).json('No History Found')
     } catch (error) {
         res.status(500).json(error)
     }
