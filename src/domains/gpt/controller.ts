@@ -37,7 +37,7 @@ const GPTConfig: CreateChatCompletionRequest = {
             "role": "assistant", "content":
                 `<Prompt>1. high resolution, hyper realistic, photography interior design, dreamy sunken living room conversation pit, wooden floor, small windows opening onto the garden, bauhaus furniture and decoration, high ceiling, beige blue salmon pastel palette, interior design magazine, cozy atmosphere , neo classique design , interior , dressing , unreal engine , living space , canape , cozy qmbiqnce , appartement parisien luxe , futuriste furniture, 8k uhd, insanely detailed\n2. high resolution, hyper realistic, photography interior design, dreamy sunken living room conversation pit, wooden floor, small windows opening onto the garden, bauhaus furniture and decoration, high ceiling, beige blue salmon pastel palette, interior design magazine, cozy atmosphere , neo classique design , interior , dressing , unreal engine , This cozy living room on a space ship features a large, oval-shaped window that offers a stunning view of the earth below. The furniture is warm and inviting, with a plush sofa and armchair upholstered in a rich, burgundy fabric. A wooden coffee table sits at the center of the room, and a few potted plants add a touch of greenery. A cozy fireplace, complete with a faux stone mantel and a flickering LED flame, adds a touch of warmth and comfort. A few framed photos of the earth and the stars hang on the walls, adding a personal touch, 8k uhd, insanely detailed\n3. high resolution, hyper realistic photography interior design, interior design magazine, cosy atmosphere, open plan, mission style home, 4 bedroom design with kitchen and living room, modular furniture with cotton textiles, wooden floor, high ceiling, large steel windows with new york city skyline in the background, 35mm lens, 8k uhd, insanely detailed</Prompt>
                 <Answer>Here are some prompt suggestions!</Answer>
-                <Question>What type of material would you like for the bed and other furniture? Do you have any specific layout in mind?</Question>`
+                <Question>What type of material would you like for the sofa and other furniture? Do you have any specific layout in mind?</Question>`
         },
         {
             "role": "user",
@@ -106,6 +106,10 @@ export const extractPrompts = (text: string): { GPTPrompt: string, DALLEPrompts:
         GPTPrompt = GPTPrompt.replace(/[\r\n]+/, '')
         GPTPrompt = GPTPrompt.replace(':', '. ')
     }
+    else if (!questionTag)
+        GPTPrompt = `${answerTag}`
+    else if (!answerTag)
+        GPTPrompt = `${questionTag}`
     else
         GPTPrompt = `${answerTag} ${questionTag}`
     const DALLEPrompts = extractDALLEPrompts(promptTag)
